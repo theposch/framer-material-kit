@@ -42,7 +42,7 @@ status = require 'material-kit-status-bar'
 text = require 'material-kit-text'
 video = require 'material-kit-video'
 bottomnav = require 'material-kit-bottom-nav'
-
+cards = require 'material-kit-cards'
 ## Setup Components
 exports.AppBar = appbar.create
 exports.Banner = banner.create
@@ -55,3 +55,4 @@ exports.StatusBar = status.create
 exports.Text = text.create
 exports.Video = video.create
 exports.BottomNav = bottomnav.create
+exports.Cards = card.create
