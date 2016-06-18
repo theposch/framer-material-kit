@@ -52,7 +52,39 @@ exports.create = (array) ->
 
 
 
+	# SET UP ACTIONS IN HEADER
+	actionsArray = []
+	if setup.actions
+		for act, i in setup.actions
+			if i == 0
+				icon = new m.Icon
+					name:act
+					superLayer:card
+					constraints:{trailing:16, top: 16}
+					color:setup.actionColor
+					clip:false
+				actionsArray.push icon
+			else
+				icon = new m.Icon
+					name:act
+					superLayer:card
+					constraints:{trailing:[actionsArray[i - 1], 16], verticalCenter:title}
+					color:setup.actionColor
+					clip:false
+				actionsArray.push icon
 
+		for act in actionsArray
+			m.utils.inky
+				layer:act
+				moveToTap:false
+				color:"white"
+				opacity:.4
+				scale:.8
+				startScale:.7
+
+
+
+	# IMAGE SETUP
 	if setup.image
 		thumbnail = new Layer
 				superLayer: card
@@ -72,8 +104,8 @@ exports.create = (array) ->
 			startScale:.7
 		card.constraints["height"] = 20 + m.utils.pt(title.height) + 10 + m.utils.pt(thumbnail.height) + 24 + 44
 
-
-	if setup.bodyText
+	# If there is Text setup but no Image, place text under title
+	if setup.bodyText and not setup.image
 			bodyText = new m.Text
 				name:"content"
 				superLayer: card
@@ -82,8 +114,9 @@ exports.create = (array) ->
 				top: [title, 16]
 				leading: 16
 				trailing: 16
+
 	# if there is an image & bodytext setup, place bodytext under image
-	if setup.bodyText & setup.image
+	if setup.bodyText && setup.image
 		bodyText = new m.Text
 			name:"content"
 			superLayer: card
@@ -95,7 +128,6 @@ exports.create = (array) ->
 			trailing: 16
 
 
-		card.constraints["height"] = 20 + m.utils.pt(title.height) + 10 + m.utils.pt(bodyText.height) + 10
 
 
 
@@ -115,17 +147,34 @@ exports.create = (array) ->
 			leading: 0
 			trailing: 0
 
-		for b, i in setup.footer
+		for button, i in setup.footer
 			if i == 0
 				button = new m.Button
-					name: 'button'
+					name: button
 					type:"flat"
 					superLayer: cardFooter
 					text: setup.footer
 					backgroundColor:"#3232"
 				button.constraints = {bottom:8, leading:16,}
 				cardButtonArray.push button
+			else
+				button = new m.Button
+					name: button
+					type:"raised"
+					superLayer: cardFooter
+					text: setup.footer
+					backgroundColor:"#3232"
+					constraints:{trailing:[cardButtonArray[i - 1], 16]}
+				cardButtonArray.push button
 
+		for button in cardButtonArray
+			m.utils.inky
+				layer: button
+				moveToTap:false
+				color:"red"
+				opacity:.4
+				scale:.8
+				startScale:.7
 
 
 
@@ -136,35 +185,6 @@ exports.create = (array) ->
 
 
 
-	# SET UP ACTIONS IN HEADER
-	actionsArray = []
-	if setup.actions
-		for act, i in setup.actions
-			if i == 0
-				icon = new m.Icon
-					name:act
-					superLayer:card
-					constraints:{trailing:16, top: 16}
-					color:setup.actionColor
-					clip:false
-				actionsArray.push icon
-			else
-				icon = new m.Icon
-					name:act
-					superLayer:card
-					constraints:{trailing:[actionsArray[i - 1], 24], verticalCenter:title}
-					color:setup.actionColor
-					clip:false
-				actionsArray.push icon
-
-		for act in actionsArray
-			m.utils.inky
-				layer:act
-				moveToTap:false
-				color:"white"
-				opacity:.4
-				scale:.8
-				startScale:.7
 
 
 	m.layout.set()
