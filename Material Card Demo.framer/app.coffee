@@ -19,13 +19,13 @@ card1 = new m.Card
 	image: Utils.randomImage()
 	imageHeight: 400
 	superLayer: scroll.content
-	actions:["more_vert"]
-	bodyText: "Wow, it's a text layer. so cool! "
-	height: 400
-	borderRadius: 16
-	buttonText: ['Action1','Action 2']
-
+	actions:["more_vert", "today"]
+	bodyText: "Wow, it's a text layer. so cool!"
+	height: 330
+	borderRadius: 2
+	footer: ["Action 1", "Action 2", "Action 3"]
 	
+
 card1.constraints =
 	top: 20
 	
@@ -42,3 +42,7 @@ card2.constraints =
 		
 m.layout.set()
 scroll.updateContent()
+
+
+
+m.layout.set()

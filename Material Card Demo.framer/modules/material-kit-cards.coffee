@@ -9,7 +9,7 @@ exports.defaults = {
 	titleColor:"black"
 	actionColor:"black"
 	actions:undefined
-	buttonText:  undefined
+	footer:  undefined
 	image: undefined
 	imageHeight: undefined
 	superLayer:undefined
@@ -63,17 +63,6 @@ exports.create = (array) ->
 				leading:0
 				trailing:0
 				top: [title, 16]
-
-		cardText = new m.Text
-			name:"content"
-			superLayer: card
-			text:setup.bodyText
-
-		cardText.constraints =
-			top: [thumbnail, 16]
-			leading: 16
-			trailing: 16
-
 		m.utils.inky
 			layer:thumbnail
 			moveToTap:true
@@ -81,46 +70,66 @@ exports.create = (array) ->
 			opacity:.4
 			scale: 2
 			startScale:.7
-	else
-		cardText = new m.Text
+		card.constraints["height"] = 20 + m.utils.pt(title.height) + 10 + m.utils.pt(thumbnail.height) + 24 + 44
+
+
+	if setup.bodyText
+			bodyText = new m.Text
+				name:"content"
+				superLayer: card
+				text:setup.bodyText
+			bodyText.constraints =
+				top: [title, 16]
+				leading: 16
+				trailing: 16
+
+	if setup.bodyText & setup.image
+		bodyText = new m.Text
 			name:"content"
 			superLayer: card
 			text:setup.bodyText
 
-		cardText.constraints =
-			top: [title, 16]
+		bodyText.constraints =
+			top: [thumbnail, 16]
 			leading: 16
 			trailing: 16
 
 
+		card.constraints["height"] = 20 + m.utils.pt(title.height) + 10 + m.utils.pt(bodyText.height) + 10
 
 
-	if setup.buttonText
-		cardActions = new Layer
+
+
+
+	cardButtonArray = []
+
+	if setup.footer
+		cardFooter = new Layer
+			name: "cardFooter"
 			superLayer: card
-
 			backgroundColor: 'transparent'
-			name: 'cardActions'
 
-		cardActions.constraints =
+		cardFooter.constraints =
 			height: 56
 			bottom: 0
 			leading: 0
 			trailing: 0
 
+		for b, i in setup.footer
+			button = new m.Button
+				name: 'button'+ b
+				type:"flat"
+				superLayer: cardFooter
+				text: setup.footer
+				backgroundColor:"#3232"
+			button.constraints = {bottom:8, leading:16,}
+			m.layout.set(button)
+			cardButtonArray.push button
+			m.layout.set()
 
 
-		button = new m.Button
-			name: 'test'
-			type:"flat"
-			superLayer:cardActions
-			text: setup.buttonText
 
-			backgroundColor:"#3232"
-			color: setup.actionColor
-		button.constraints = {bottom:8, leading:8}
 
-	
 
 
 	# SET UP ACTIONS IN HEADER
