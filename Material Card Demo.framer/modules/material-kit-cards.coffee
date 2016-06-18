@@ -82,7 +82,7 @@ exports.create = (array) ->
 				top: [title, 16]
 				leading: 16
 				trailing: 16
-
+	# if there is an image & bodytext setup, place bodytext under image
 	if setup.bodyText & setup.image
 		bodyText = new m.Text
 			name:"content"
@@ -116,15 +116,19 @@ exports.create = (array) ->
 			trailing: 0
 
 		for b, i in setup.footer
-			button = new m.Button
-				name: 'button'+ b
-				type:"flat"
-				superLayer: cardFooter
-				text: setup.footer
-				backgroundColor:"#3232"
-			button.constraints = {bottom:8, leading:16,}
-			m.layout.set(button)
-			cardButtonArray.push button
+			if i == 0
+				button = new m.Button
+					name: 'button'
+					type:"flat"
+					superLayer: cardFooter
+					text: setup.footer
+					backgroundColor:"#3232"
+				button.constraints = {bottom:8, leading:16,}
+				cardButtonArray.push button
+
+
+
+
 			m.layout.set()
 
 
