@@ -23,7 +23,7 @@ card1 = new m.Card
 	bodyText: "Some text can go here"
 	height: 330
 	borderRadius: 2
-	footer: ["Action 1", "Action 2", "Action 3"]
+	footer: ["TEST", "Action 2", "Action 3"]
 	
 
 card1.constraints =
@@ -33,12 +33,21 @@ card1.constraints =
 # Create second Card		
 card2 = new m.Card
 	superLayer: scroll.content
+	image: Utils.randomImage()
+	imageHeight: 400
 	
 
 card2.constraints =
 	top: [card1,36]
 
+card3 = new m.Card
+	superLayer: scroll.content
+	height: 200
+	
+	
 
+card3.constraints =
+	top: [card2,36]
 
 	
 

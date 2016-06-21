@@ -135,7 +135,7 @@ exports.create = (array) ->
 
 
 
-	cardButtonArray = []
+	buttonArray = []
 	if setup.footer
 		cardFooter = new Layer
 			name: "cardFooter"
@@ -147,29 +147,35 @@ exports.create = (array) ->
 			bottom: 0
 			leading: 0
 			trailing: 0
-
+		card.constraints["height"] = 20 + m.utils.pt(title.height) + 16 + m.utils.pt(thumbnail.height) + 16 +  m.utils.pt(cardFooter.height)
 		setup.footer.forEach (item) ->
 			if i == 0
 				button = new m.Button
 					name: item
 					type:"flat"
 					superLayer: cardFooter
-					text: item
+					text: setup.footer
 					backgroundColor:"#3232"
-				button.constraints = {bottom:8, leading:16,}
-				cardButtonArray.push button
+				button.constraints = {bottom:8, leading:16}
+				buttonArray.push button
 			else
 				button = new m.Button
 					name: item
 					type:"flat"
 					superLayer: cardFooter
-					text: item
+					text: setup.footer
 					backgroundColor:"#3232"
+
+
+				buttonArray.push button
+
+				m.layout.set()
+
 					# this guy breaks things, i think, so commenting out.
 					# constraints:{leading:[cardButtonArray[i - 1], 16]}
-				cardButtonArray.push button
 
-		for button in cardButtonArray
+
+		for button in buttonArray
 			m.utils.inky
 				layer: button
 				moveToTap:false
@@ -177,6 +183,7 @@ exports.create = (array) ->
 				opacity:.4
 				scale:.8
 				startScale:.7
+
 
 
 
