@@ -148,24 +148,25 @@ exports.create = (array) ->
 			leading: 0
 			trailing: 0
 
-		for button, i in setup.footer
+		setup.footer.forEach (item) ->
 			if i == 0
 				button = new m.Button
-					name: button
+					name: item
 					type:"flat"
 					superLayer: cardFooter
-					text: setup.footer
+					text: item
 					backgroundColor:"#3232"
 				button.constraints = {bottom:8, leading:16,}
 				cardButtonArray.push button
 			else
 				button = new m.Button
-					name: button
+					name: item
 					type:"flat"
 					superLayer: cardFooter
-					text: setup.footer
+					text: item
 					backgroundColor:"#3232"
-					constraints:{leading:[cardButtonArray[i - 1], 16]}
+					# this guy breaks things, i think, so commenting out.
+					# constraints:{leading:[cardButtonArray[i - 1], 16]}
 				cardButtonArray.push button
 
 		for button in cardButtonArray
