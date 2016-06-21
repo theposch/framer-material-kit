@@ -22,6 +22,7 @@ exports.defaults.props = Object.keys(exports.defaults)
 
 exports.create = (array) ->
 	setup = m.utils.setupComponent(array, exports.defaults)
+
 	card = new Layer
 		name:"Card"
 		backgroundColor:m.color(setup.backgroundColor)
@@ -116,6 +117,7 @@ exports.create = (array) ->
 				trailing: 16
 
 	# if there is an image & bodytext setup, place bodytext under image
+
 	if setup.bodyText && setup.image
 		bodyText = new m.Text
 			name:"content"
@@ -134,7 +136,6 @@ exports.create = (array) ->
 
 
 	cardButtonArray = []
-
 	if setup.footer
 		cardFooter = new Layer
 			name: "cardFooter"
@@ -160,11 +161,11 @@ exports.create = (array) ->
 			else
 				button = new m.Button
 					name: button
-					type:"raised"
+					type:"flat"
 					superLayer: cardFooter
 					text: setup.footer
 					backgroundColor:"#3232"
-					constraints:{trailing:[cardButtonArray[i - 1], 16]}
+					constraints:{leading:[cardButtonArray[i - 1], 16]}
 				cardButtonArray.push button
 
 		for button in cardButtonArray

@@ -19,7 +19,7 @@ card1 = new m.Card
 	image: Utils.randomImage()
 	imageHeight: 400
 	superLayer: scroll.content
-	actions:["more_vert", "today"]
+	actions:["more_vert"]
 	bodyText: "Some text can go here"
 	height: 330
 	borderRadius: 2
@@ -30,16 +30,18 @@ card1.constraints =
 	top: 20
 	
 
-
 # Create second Card		
 card2 = new m.Card
 	superLayer: scroll.content
+	
 
 card2.constraints =
 	top: [card1,36]
 
-		
-m.layout.set()
+
+
+	
+
 
 
 
