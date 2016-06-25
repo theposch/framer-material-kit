@@ -15,44 +15,37 @@ scroll = new ScrollComponent
 # Create first Card
 card1 = new m.Card
 	backgroundColor: 'white'
-	title: "This is a card"
+	superLayer: scroll.content
+	
+	contentHeadline: "miau miau"
+	contentText: 'wo2'
+	headerTitle: "This is a card"
+	headerSubtitle: "MEOW"
+	headerImage: Utils.randomImage()
+	headerImageRadius: 500
 	image: Utils.randomImage()
 	imageHeight: 400
-	superLayer: scroll.content
-	actions:["more_vert"]
-	bodyText: "Some text can go here"
+	actions:["more_vert", "face"]
+	
 	height: 330
 	borderRadius: 2
-	footer: ["TEST", "Action 2", "Action 3"]
+	footer: ["Action 1", "Action 2", "Action 3"]
 	
 
 card1.constraints =
 	top: 20
 	
 
-# Create second Card		
+
+
+
 card2 = new m.Card
 	superLayer: scroll.content
-	image: Utils.randomImage()
-	imageHeight: 400
+	headerTitle: 'hello'
+	contentHeadline: "whats up"
 	
-
 card2.constraints =
-	top: [card1,36]
-
-card3 = new m.Card
-	superLayer: scroll.content
-	height: 200
-	
-	
-
-card3.constraints =
-	top: [card2,36]
-
-	
-
-
-
+	top: [card1, 16]
 
 
 m.layout.set()

@@ -1,28 +1,19 @@
 m = require 'material-kit'
 
 exports.defaults = {
-
+	title: undefined
+	headerSubtitle: undefined
+	bodyText: "Content"
 	height: 300
+	cardHeaderbackgroundColor:'red'
+
 	type:"card"
 	backgroundColor:"white"
-
-	headerTitle: undefined
-	headerSubtitle: undefined
-	headerImage: undefined
-	headerImageRadius: 400
-	headerBackgroundColor: 'red'
-
-	contentHeadline: undefined
-	contentText: undefined
-
 	titleColor:"black"
 	actionColor:"black"
-
 	actions:undefined
 	footer:  undefined
 	image: undefined
-
-
 	imageHeight: undefined
 	superLayer:undefined
 	borderRadius: undefined
@@ -37,7 +28,7 @@ exports.create = (array) ->
 
 	card = new Layer
 		name:"Card"
-		backgroundColor:m.color(setup.backgroundColor)
+		backgroundColor:'m.color(setup.backgroundColor)'
 		shadowColor: "rgba(0, 0, 0, .12)"
 		shadowBlur: m.px(4)
 		shadowY: m.px(2)
@@ -50,35 +41,26 @@ exports.create = (array) ->
 		top:0
 		height: setup.height
 
-
-# -------  CREATE CARD HEADER -----------------
-
-	if setup.headerTitle
+	if setup.title
 		cardHeader = new Layer
 			name: "cardHeader"
-			backgroundColor:m.color(setup.headerBackgroundColor)
+			cardHeaderbackgroundColor:m.color(setup.cardHeaderbackgroundColor)
 			superLayer: card
-			height: 128
-
-
-		cardHeader.constraints =
-			leading: 0
-			trailing: 0
-
-		headerTitle = new m.Text
+			height: 300
+			cardHeader.constraints =
+				width: 900
+			m.layout.set(cardHeader)
+		title = new m.Text
 			superLayer:cardHeader
-			text: setup.headerTitle
+			text:setup.title
 			fontWeight:"semibold"
 			fontSize:14
-			name:"headerTitle"
+			name:"title"
 			lineHeight:20
-
 			constraints:
-				top:16
+				top:24
 				width:220
 				leading:16
-		m.layout.set()
-
 
 	if setup.headerSubtitle
 		headerSubtitle = new m.Text
@@ -88,108 +70,18 @@ exports.create = (array) ->
 			fontSize:14
 			name:"headerSubtitle"
 			constraints:
-				top: [headerTitle, 4]
+				top:  8
 				width:220
 				leading:16
-			m.layout.set()
 
-	if setup.headerImage
-			headerImage = new Layer
-				superLayer: cardHeader
-				name: "headerImage"
-				width: 80
-				height: 80
-				image: setup.headerImage
-				borderRadius: setup.headerImageRadius
-			headerImage.constraints =
-				top: 16
-				leading: 16
-			m.layout.set()
-
-	if headerImage && setup.headertitle && setup.headerSubtitle
-
-			headerTitle.constraints.leading = [headerImage, 16]
-
-			headerSubtitle.constraints =
-				leading:  72
-			m.layout.set()
+		title.constraints=
+			top:  8
 
 
 
 
-# -------  CREATE CONTENT AREA -----------------
 
 
-	if setup.contentHeadline or setup.contentText
-		contentArea = new Layer
-			name: "contentArea"
-			superLayer: card
-
-		contentArea.constraints =
-			leading: 0
-			trailing: 0
-			top: [cardHeader,0]
-		m.layout.set()
-
-	if setup.contentHeadline
-		contentHeadline = new m.Text
-			name:"contentHeadline"
-			superLayer: contentArea
-			text:setup.contentHeadline
-			fontWeight: 'Regular'
-			fontSize: 24
-		contentHeadline.constraints =
-			top: 16
-			leading: 16
-			trailing: 16
-		m.layout.set()
-
-
-	if setup.contentText
-		contentText = new m.Text
-			name:"contentText"
-			superLayer: contentArea
-			text:setup.contentText
-		contentTextconstraints =
-			top: 16
-			leading: 16
-			trailing: 16
-		m.layout.set()
-
-	if setup.contentHeadline && setup.contentText
-			contentHeadline.constraints =
-				top: 16
-				leading: 16
-				trailing: 162
-			contentText.constraints =
-				top: [contentHeadline, 8]
-				leading: 16
-				trailing: 16
-			m.layout.set()
-
-	if cardHeader
-		contentArea.constraints =
-			top: [cardHeader,0]
-		m.layout.set()
-
-	if setup.image
-		thumbnail = new Layer
-				superLayer: card
-				image: setup.image
-				height: setup.imageHeight
-		m.layout.set()
-
-
-	if thumbnail && cardHeader
-
-		contentArea.constraints =
-			top: [thumbnail, 0]
-
-		thumbnail.constraints =
-					top: [cardHeader,0]
-					leading: 0
-					trailing: 0
-		m.layout.set()
 
 
 
@@ -201,7 +93,7 @@ exports.create = (array) ->
 			if i == 0
 				icon = new m.Icon
 					name:act
-					superLayer:cardHeader
+					superLayer:card
 					constraints:{trailing:16, top: 16}
 					color:setup.actionColor
 					clip:false
@@ -209,8 +101,8 @@ exports.create = (array) ->
 			else
 				icon = new m.Icon
 					name:act
-					superLayer:cardHeader
-					constraints:{trailing:[actionsArray[i - 1], 16], top: 16}
+					superLayer:card
+					constraints:{trailing:[actionsArray[i - 1], 16], verticalCenter:title}
 					color:setup.actionColor
 					clip:false
 				actionsArray.push icon
@@ -223,6 +115,53 @@ exports.create = (array) ->
 				opacity:.4
 				scale:.8
 				startScale:.7
+
+
+
+	# IMAGE SETUP
+	if setup.image
+		thumbnail = new Layer
+				superLayer: card
+				image: setup.image
+				height: setup.imageHeight
+
+		thumbnail.constraints =
+				leading:0
+				trailing:0
+				top: [cardHeader, 0]
+		m.utils.inky
+			layer:thumbnail
+			moveToTap:true
+			color:"white"
+			opacity:.4
+			scale: 2
+			startScale:.7
+		card.constraints["height"] = 20 + m.utils.pt(title.height) + 10 + m.utils.pt(thumbnail.height) + 24 + 44
+
+	# If there is Text setup but no Image, place text under title
+	if setup.bodyText and not setup.image
+			bodyText = new m.Text
+				name:"content"
+				superLayer: card
+				text:setup.bodyText
+			bodyText.constraints =
+				top: [title, 16]
+				leading: 16
+				trailing: 16
+
+	# if there is an image & bodytext setup, place bodytext under image
+
+	if setup.bodyText && setup.image
+		bodyText = new m.Text
+			name:"content"
+			superLayer: card
+			text:setup.bodyText
+
+		bodyText.constraints =
+			top: [thumbnail, 16]
+			leading: 16
+			trailing: 16
+
 
 
 
@@ -288,6 +227,8 @@ exports.create = (array) ->
 				startScale:.7
 
 
+
+
 			m.layout.set()
 
 
@@ -304,7 +245,7 @@ exports.create = (array) ->
 
 
 
-	m.utils.specialChar(headerTitle)
+	m.utils.specialChar(title)
 
 
 
