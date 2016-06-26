@@ -159,7 +159,7 @@ exports.create = (array) ->
 			name:"Content Headline"
 			lineHeight:20
 			constraints:
-				top:16
+				top:24
 				width:220
 				leading:24
 		m.layout.set()
@@ -184,7 +184,7 @@ exports.create = (array) ->
 
 	if setup.contentHeadline && setup.contentText
 			contentHeadline.constraints =
-				top: 16
+				top: 24
 				leading: 16
 				trailing: 16
 			contentText.constraints =
